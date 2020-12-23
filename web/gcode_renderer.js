@@ -74,21 +74,36 @@ function GCodeRenderer() {
         }
       });
 
-      viewModel.vertexIndex = self.motionGeo.vertices.length;
+      // var color =  new THREE.Color(GCodeRenderer.feedColors[viewModel.code.index%GCodeRenderer.feedColors.length]);
+      var color =  GCodeRenderer.feedColors[viewModel.code.index%GCodeRenderer.feedColors.length];
+      var p1 = new THREE.Vector3(self.lastLine.x, self.lastLine.y, self.lastLine.z);
+      var p2 = new THREE.Vector3(newLine.x, newLine.y, newLine.z);
 
-      // var color =  new THREE.Color(GCodeRenderer.motionColors[viewModel.code.index%GCodeRenderer.motionColors.length]);
-      var color =  GCodeRenderer.motionColors[viewModel.code.index%GCodeRenderer.motionColors.length];
-      self.motionGeo.vertices.push(new THREE.Vector3(self.lastLine.x, self.lastLine.y, self.lastLine.z));
-      self.motionGeo.vertices.push(new THREE.Vector3(newLine.x, newLine.y, newLine.z));
+      viewModel.vertexIndex = self.feedAllGeo.vertices.length;
 
-      self.motionGeo.colors.push(color);
-      self.motionGeo.colors.push(color);
+      if( viewModel.code.index <= self.index ) {
+        self.feedGeo.vertices.push(p1);
+        self.feedGeo.vertices.push(p2);
+        self.feedGeo.colors.push(color);
+        self.feedGeo.colors.push(color);
+      }
+      else {
+        self.feedIncGeo.colors.push(color);
+        self.feedIncGeo.colors.push(color);
+        self.feedIncGeo.vertices.push(p1);
+        self.feedIncGeo.vertices.push(p2);
+      }
 
-      viewModel.vertexLength = self.motionGeo.vertices.length - viewModel.vertexIndex;
+      self.feedAllGeo.vertices.push(p1);
+      self.feedAllGeo.vertices.push(p2);
+      self.feedAllGeo.colors.push(color);
+      self.feedAllGeo.colors.push(color);
+
+      viewModel.vertexLength = self.feedAllGeo.vertices.length - viewModel.vertexIndex;
 
       self.lastLine = newLine;
 
-      return self.motionGeo;
+      return self.feedGeo;	  
     },
     G1: function(viewModel) {
       // console.log("in g1 renderer handler " + viewModel.code)
@@ -166,14 +181,15 @@ function GCodeRenderer() {
 GCodeRenderer.motionColors = [ new THREE.Color(0xdddddd) ]
 GCodeRenderer.feedColors = [
                              // new THREE.Color(0xffcc66), // canteloupe
-                             new THREE.Color(0x66ccff), // sky
-                             new THREE.Color(0x22bb22), // honeydew
-                             // new THREE.Color(0xff70cf), // carnation
-                             new THREE.Color(0xcc66ff), // lavender
-                             new THREE.Color(0xfffe66), // banana
-                             new THREE.Color(0xff6666) // salmon
+                             //new THREE.Color(0x66ccff), // sky
+                             //new THREE.Color(0x22bb22), // honeydew
+                             //new THREE.Color(0xff70cf), // carnation
+                             //new THREE.Color(0xcc66ff), // lavender
+                             //new THREE.Color(0xfffe66), // banana
+                             //new THREE.Color(0xff6666) // salmon
                              // new THREE.Color(0x66ffcc), // spindrift
                              // new THREE.Color(0x66ff66), // flora
+                             new THREE.Color(0x000000) // salmon
                            ]
 
 GCodeRenderer.prototype.absolute = function(v1, v2) {

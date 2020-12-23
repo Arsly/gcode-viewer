@@ -41,7 +41,7 @@
 var config = {
   lastImportedKey: 'last-imported',
   notFirstVisitKey: 'not-first-visit',
-  defaultFilePath: 'examples/octocat.gcode'
+  defaultFilePath: 'examples/fdm.gcode'
 }
 
 

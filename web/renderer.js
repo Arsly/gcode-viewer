@@ -22,7 +22,7 @@ function createScene(container) {
 
     scene = new THREE.Scene();
 
-    renderer = new THREE.WebGLRenderer( { clearColor: 0x000000, clearAlpha: 1, antialias: false } );
+    renderer = new THREE.WebGLRenderer( { clearColor: 0xd1decc, clearAlpha: 1, antialias: false } );
     renderer.autoClear = false;
 
     container.appendChild( renderer.domElement );
